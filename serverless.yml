@@ -22,7 +22,6 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: python3.8
-  # timeout: 900
 
   # you can overwrite defaults here
   stage: dev
@@ -59,7 +58,6 @@ provider:
 
 functions:
   linebot:
-    # timeout: 900
     handler: handler.webhook
     events:
       - http:

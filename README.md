@@ -9,7 +9,7 @@
 - [Technology](#technology)
 - [Features](#features)
 - [Demonstration](#demonstration)
-  <!-- - [Setup](#setup) -->
+- [Setup](#setup)
   <!-- - [Reference](#reference) -->
 
 ### Technology
@@ -46,13 +46,41 @@
 
    - 指令：\*\*學號 地點 狀況
    - 輸入：\*\*001 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
-   - 回傳: \*\*001 xxx 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
+   - 回傳： \*\*001 xxx 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
 
 3. 清除回報 \
    只輸入學號，清除之前輸入的狀況。
    - 指令：\*學號
    - 輸入：\*001
    - 回傳：\*001
+
+### Setup
+
+1. Install serverless
+
+```
+npm install -g serverless
+```
+
+2. Set AWS certificate \
+   Remember to create your AWS user with programmatic access
+
+```
+set AWS_ACCESS_KEY_ID=YOUR_KEY_ID
+set AWS_SECRET_ACCESS_KEY=YOUR_ACCESS_KEY_ID
+```
+
+3. Serverless deploy \
+   Setup serverless.yml ([Reference](https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml/))
+
+```
+pip freeze > requirements.txt
+sls deploy
+```
+
+4. Set Line Messaging Webhook URL
+
+Copy the serverless function endpoint from deploy logs and paste it to your Linebot webhook URL (Line Channel -> Messaging API -> Webhook Settings -> Webhook URL).
 
 ### Demonstration
 
