@@ -2,7 +2,5 @@ __pycache__/
 .serverless/
 node_modules/
 
-package-lock.json
-
 aws-key
 settings.py
