@@ -18,33 +18,49 @@
 
 - `Line` 做為使用者介面
 - `Lambda` 執行 `Line Messaging API` 來處理 Line 回報訊息。由於放假才需要回報，且程式邏輯單純，所以 `Lambda` 的特性很符合此專案的需求。
-- `DynamoDB` 儲存新兵的回報資訊。`Lambda` 預設閒置 5 分鐘就停用（stateless），不適合將回報資訊儲存在變數中，且 NoSQL 較彈性，所以採用 `DynamoDB`。
+- `DynamoDB` 儲存新兵的回報資訊。`Lambda` 預設閒置 5 分鐘就停用（stateless），不適合將回報資訊儲存在變數中，且 NoSQL 較彈性，所以採用 `DynamoDB`。每一筆資料格式如下：
+
+```json
+# date -> %Y%m%d, ex: 20200101
+# period -> 三個回報時段, [1100, 1500, 2000]
+# sid -> 學號
+{
+  "id": "dateperiod-sid",
+  "status": "sid xxx 在家 無發燒 咳嗽頭痛 已看醫生 體溫35.8度"
+}
+```
 
 ### Features
 
 以 `*` 做為觸發指令的關鍵字，總共有三個指令。
 
-1. 使用預設回報 </br>
-   只需輸入學號和地點，程式會自動回復預設的狀況以及自動 36.0-36.7 的體溫。
+1. 使用預設回報 \
+   只需輸入學號和地點，程式會自動回復預設的狀況以及自動 **36.0-36.7** 的體溫。
 
    - 指令：\*學號 地點
-   - 輸入：\*096 在家
-   - 回傳：\*096 xxx 無發燒 無感冒 無飲酒 體溫 36.0 度
+   - 輸入：\*001 在家
+   - 回傳：\*001 xxx 無發燒 無感冒 無飲酒 體溫 36.0 度
 
-2. 使用自訂回報 </br>
+2. 使用自訂回報 \
    輸入學號、地點以及自訂的狀況。
 
    - 指令：\*\*學號 地點 狀況
-   - 輸入：\*\*096 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
-   - 回傳: \*\*096 xxx 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
+   - 輸入：\*\*001 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
+   - 回傳: \*\*001 xxx 在家 無發燒 咳嗽頭痛 已看醫生 體溫 35.8 度
 
-3. 清除回報 </br>
+3. 清除回報 \
    只輸入學號，清除之前輸入的狀況。
    - 指令：\*學號
-   - 輸入：\*096
-   - 回傳：\*096
+   - 輸入：\*001
+   - 回傳：\*001
 
 ### Demonstration
 
-<img src="https://i.imgur.com/tK4ewIO.jpg" width="350" height="400" /> &emsp;&emsp;&emsp;&emsp;
-<img src="https://i.imgur.com/WcyQL2r.jpg" width="350" height="400" />
+1. 使用預設回報 \
+   <img src="https://imgur.com/EvulOCs.jpg" width="350" height="400" />
+
+2. 使用自訂回報 \
+   <img src="https://imgur.com/iX5zCTo.jpg" width="350" height="400" />
+
+3. 清除回報 \
+   <img src="https://imgur.com/eRU8S9M.jpg" width="350" height="400" />

@@ -10,11 +10,9 @@ from linebot.models import (
 )
 
 from dynamodb import get_batch_item, update_item
-
 from settings import CHANNEL_ACCESS_TOKEN, CHANNEL_SECRET, id_to_name
 
 timezone_tw = pytz.timezone('Asia/Taipei')
-
 
 
 def get_time_period():
@@ -46,23 +44,7 @@ def get_title():
       return f'{date} {period} 回報'
 
 
-# def init_messages():
-
-#     print('init messages')
-
-#     global messages
-#     start = 93
-#     end = 107
-#     messages = []
-#     for id in range(start, end + 1):
-#         id = str(id).zfill(3)  # 96 -> 096
-#         messages.append([id])
-    
 def update(msg, use_default=True):
-
-    # **096 在家 無發燒 體溫36.1度
-    # *096 在家
-    # *096
 
     msg = msg.strip().split(' ', 1)
     cmd = msg[0]
@@ -107,41 +89,10 @@ def get_all():
     
 
 
-# def update_messages(new_msg, use_default=True):
-
-#     update_item(period, status)
-
-#     global messages
-#     global to_send
-
-#     new_msg[0] = new_msg[0].zfill(3)
-#     # msg -> [id, name, status]
-#     for idx, msg in enumerate(messages):
-#         if msg[0] == new_msg[0]:
-#             default = ['無發燒', '無感冒', '無飲酒', f'體溫{random.uniform(36.1, 36.7):.1f}度']
-            
-#             messages[idx] = new_msg + default if use_default and len(new_msg) > 1 else new_msg
-#             to_send = True
-#             break
-    
-
-# id name status
-# 096 xxx 在家 無發燒
-# to_send = False
-# messages = []
-# curr_period = get_time_period()
-# init_messages()
 
 def webhook(event, context):
-    # global messages
-    # global curr_period
-    # global to_send
 
     to_send = False
-    # period = get_time_period()
-    # if curr_period != period:
-    #     curr_period = period
-    #     init_messages()
 
     line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
     handler = WebhookHandler(CHANNEL_SECRET)
@@ -153,21 +104,8 @@ def webhook(event, context):
         # groupId = e['source']['groupId']
         text = e['message']['text'].strip()
 
-        # if text.startswith('**'):
-        #     # 使用自訂
-        #     # **096 在家 無發燒 體溫36.1度
-        #     msg = text[2:].strip().split(' ', 2)
-        #     update_messages(msg, False)
-        # elif text.startswith('*'):
-        #     # 使用預設
-        #     # *096 在家
-        #     msg = text[1:].strip().split(' ', 2)
-        #     update_messages(msg, True)
-
         to_send = to_send or update(text)
-    # to_send = to_send or update('*096 出去玩')
 
-    # text = '\n'.join([' '.join(msg) for msg in messages])
     text = '\n'.join(msg for msg in get_all())
     text = f'{get_title()}\n{text}'
 
@@ -184,6 +122,3 @@ def webhook(event, context):
     }
 
     return response
-
-# if __name__ == '__main__':
-#     webhook(None, None)

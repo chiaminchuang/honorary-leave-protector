@@ -10,7 +10,7 @@
 #    docs.serverless.com
 #
 
-service: hornoray-leave-protector
+service: honorary-leave-protector
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -22,7 +22,7 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: python3.8
-  timeout: 900
+  # timeout: 900
 
   # you can overwrite defaults here
   stage: dev
@@ -58,8 +58,8 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  line_bot:
-    timeout: 900
+  linebot:
+    # timeout: 900
     handler: handler.webhook
     events:
       - http:
